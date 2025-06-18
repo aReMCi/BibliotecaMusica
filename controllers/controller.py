@@ -7,10 +7,32 @@ class Controller:
         self.view = view
 
         self.view.on_add_music_button_click = self.add_music
+        self.view.on_search_music_button_click = self.buscar_music
 
+    def music_list(self):
+        return self.model.mostrar_lista()
+    
     def add_music(self, Titulo, Artista, Duracion):
         if Titulo and Artista and Duracion:
             self.model.add_music(Titulo, Artista, Duracion)
-            self.view.update_treeview(self.model.mostrar_lista())
+            self.view.update_treeview(self.music_list())
         else:
-            print("Por favor, complete todos los campos.")
+            raise ValueError("Por favor complete todos los campos.")
+        
+    def eliminar_music(self,dato):
+        if dato:
+            self.model.eliminar_music(dato)
+            self.view.update_treeview(self.music_list())
+        else:
+            raise ValueError("Por favor ingrese un dato válido para eliminar.")
+        
+    def buscar_music(self, dato):
+        if dato:
+            resultado = self.model.buscar_music(dato)
+            if resultado:
+                return resultado
+            else:
+                raise ValueError("La música no se encuentra en la lista.")
+        else:
+            raise ValueError("Por favor ingrese un dato válido para buscar.")
+        

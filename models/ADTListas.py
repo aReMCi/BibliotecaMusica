@@ -22,21 +22,18 @@ class ListaDinamicaDoble:
             self.cola.siguiente = nuevo_nodo
             nuevo_nodo.anterior = self.cola
             self.cola = nuevo_nodo
-
-    def _buscar(self, dato):
-        actual = self.primero
-        while actual:
-            if (actual.Titulo == dato) or (actual.Artista == dato):
-                return actual
-            actual = actual.siguiente
-        return None
     
     def mostrar(self):
         actual = self.primero
+        resultado = []
         while actual:
-            resultado = f"Título: {actual.Titulo}, Artista: {actual.Artista}, Duración: {actual.Duracion}"
+            resultado.append({
+                'Artista': actual.Artista,
+                'Título': actual.Titulo,
+                'Duración': actual.Duracion
+            })
             actual = actual.siguiente
-        return resultado if resultado else "Lista vacía"
+        return resultado
 
 
     def _eliminar(self, dato):
@@ -62,11 +59,15 @@ class ListaDinamicaDoble:
             raise ValueError("El dato no se encuentra en la lista")
 
     def buscar(self, dato):
-        nodo = self._buscar(dato)
-        if nodo:
-            return nodo.dato
-        else:
-            return None
+        actual = self.primero
+        while actual:
+            if actual.Titulo == dato or actual.Artista == dato:
+                return {
+                    'Artista': actual.Artista,
+                    'Título': actual.Titulo,
+                    'Duración': actual.Duracion
+                }
+            actual = actual.siguiente
 
     def insertar(self, Titulo, Artista, Duracion, posicion):
         nuevo_nodo = Nodo(Titulo, Artista, Duracion)

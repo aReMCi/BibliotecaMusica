@@ -1,4 +1,4 @@
-from tkinter import Frame, Label, Button, Entry, Listbox, ttk
+from tkinter import Frame, Label, Button, Entry, Listbox, ttk, messagebox
 
 class View:
     def __init__(self, master):
@@ -21,6 +21,7 @@ class View:
 
         #Incializacion de botones
         self.on_add_music_button = None
+        self.on_search_music_button = None
 
         #Etiquetas
         self.titulo = Label(self.frame, text="Biblioteca de Música", font=("Arial", 16))
@@ -43,12 +44,35 @@ class View:
         #Boton para añdir musica
         self.add_music_button = Button(self.frame, text="Añadir Música", command= self._handle_add_music_button_click)
         self.add_music_button.grid(row=5, column=0, padx=2, pady=2)
+
+        # Botón para buscar música
+        self.search_music_button = Button(self.frame, text="Buscar Música", command=self._handle_search_music_button_click)
+        self.search_music_button.grid(row=5, column=1, padx=2, pady=2)
         
     def _handle_add_music_button_click(self):
         if self.on_add_music_button_click:
             Titulo = self.Titulo_Entry.get()
             Artista = self.Artista_Entry.get()
             Duracion = self.Duracion_Entry.get()
-            self.on_add_music_button(Titulo, Artista, Duracion)
-        else:
-            print("No se ha definido la acción para el botón de añadir música.")
+            self.on_add_music_button_click(Titulo, Artista, Duracion)
+            self.Titulo_Entry.delete(0, 'end')
+            self.Artista_Entry.delete(0, 'end')
+            self.Duracion_Entry.delete(0, 'end')
+            messagebox.showinfo("Éxito", "Música añadida correctamente")
+
+    def _handle_search_music_button_click(self):
+        if self.on_search_music_button_click:
+            dato = self.Titulo_Entry.get()
+            resultado = self.on_search_music_button_click(dato)
+            if resultado:
+                messagebox.showinfo("Resultado de búsqueda", f"Encontrado: {resultado['Artista']} - {resultado['Título']} - {resultado['Duración']}")
+            else:
+                messagebox.showwarning("No encontrado", "La música no se encuentra en la lista")
+            self.Titulo_Entry.delete(0, 'end')
+        
+
+    def update_treeview(self, music_list):
+        for music in music_list:
+            self.tree.delete(*self.tree.get_children())
+        for music in music_list:
+            self.tree.insert("", "end", values=(music['Artista'], music['Título'], music['Duración']))

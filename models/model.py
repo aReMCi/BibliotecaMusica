@@ -4,8 +4,8 @@ class DataModel:
     def __init__(self):
         self.lista = ListaDinamicaDoble()
 
-    def add_music(self, titulo, artista, duracion):
-        self.lista.append(titulo, artista, duracion)
+    def add_music(self, Titulo, Artista, Duracion):
+        self.lista.append(Titulo, Artista, Duracion)
 
     def buscar_music(self, dato):
         return self.lista.buscar(dato)
