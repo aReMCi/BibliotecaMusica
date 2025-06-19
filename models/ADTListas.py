@@ -35,59 +35,29 @@ class ListaDinamicaDoble:
             actual = actual.siguiente
         return resultado
 
-
-    def _eliminar(self, dato):
+    def eliminar(self, dato):
         actual = self.primero
         while actual:
-            if actual.dato == dato:
+            if (actual.Titulo == dato) or (actual.Artista == dato):
                 if actual.anterior:
                     actual.anterior.siguiente = actual.siguiente
                 else:
-                    self.cabeza = actual.siguiente
+                    self.primero = actual.siguiente
                 if actual.siguiente:
                     actual.siguiente.anterior = actual.anterior
                 else:
                     self.cola = actual.anterior
-                return
+                return True
             actual = actual.siguiente
-
-    def eliminar(self, dato):
-        nodo = self._buscar(dato)
-        if nodo:
-            self._eliminar(nodo)
-        else:
-            raise ValueError("El dato no se encuentra en la lista")
+        return False
 
     def buscar(self, dato):
         actual = self.primero
         while actual:
-            if actual.Titulo == dato or actual.Artista == dato:
+            if (actual.Titulo == dato) or (actual.Artista == dato):
                 return {
                     'Artista': actual.Artista,
                     'Título': actual.Titulo,
                     'Duración': actual.Duracion
                 }
             actual = actual.siguiente
-
-    def insertar(self, Titulo, Artista, Duracion, posicion):
-        nuevo_nodo = Nodo(Titulo, Artista, Duracion)
-        if posicion == 0:
-            nuevo_nodo.siguiente = self.primero
-            if self.primero:
-                self.primero.anterior = nuevo_nodo
-            self.primero = nuevo_nodo
-            if not self.cola:
-                self.cola = nuevo_nodo
-        else:
-            actual = self.primero
-            for _ in range(posicion - 1):
-                if actual is None:
-                    raise IndexError("Posición fuera de rango")
-                actual = actual.siguiente
-            nuevo_nodo.siguiente = actual.siguiente
-            nuevo_nodo.anterior = actual
-            if actual.siguiente:
-                actual.siguiente.anterior = nuevo_nodo
-            else:
-                self.cola = nuevo_nodo
-            actual.siguiente = nuevo_nodo
